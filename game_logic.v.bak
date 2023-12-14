@@ -1,0 +1,64 @@
+module game_logic (
+    input wire clk,
+    input wire reset,
+    input wire left_input,
+    input wire right_input,
+    output reg [7:0] paddle_x,
+    output reg [7:0] ball_x,
+    output reg [7:0] ball_y,
+    output reg ball_dx,
+    output reg ball_dy,
+    output reg hit_paddle,
+    output reg hit_brick
+);
+
+    // Define brick positions and dimensions
+    reg [7:0] brick_x = 40;
+    reg [7:0] brick_y = 20;
+    reg brick_width = 20;
+    reg brick_height = 10;
+
+    // Instantiate Paddle and CollisionDetection modules
+    Paddle paddle_inst (
+        .clk(clk),
+        .reset(reset),
+        .left_input(left_input),
+        .right_input(right_input),
+        .paddle_x(paddle_x)
+    );
+
+    CollisionDetection collision_inst (
+        .clk(clk),
+        .reset(reset),
+        .ball_x(ball_x),
+        .ball_y(ball_y),
+        .ball_dx(ball_dx),
+        .ball_dy(ball_dy),
+        .paddle_x(paddle_x),
+        .paddle_width(paddle_width),
+        .paddle_top(paddle_top),
+        .paddle_bottom(paddle_bottom),
+        .brick_x(brick_x),
+        .brick_y(brick_y),
+        .brick_width(brick_width),
+        .brick_height(brick_height),
+        .hit_paddle(hit_paddle),
+        .hit_brick(hit_brick)
+    );
+
+    always @(posedge clk or posedge reset) begin
+        if (reset) begin
+            // Reset game state
+            paddle_x <= 80;
+            ball_x <= 100;
+            ball_y <= 50;
+            ball_dx <= 1;
+            ball_dy <= 1;
+            hit_paddle <= 0;
+            hit_brick <= 0;
+        end else begin
+            // Game logic can be implemented here
+            // For instance, incrementing score, updating brick positions, etc.
+        end
+    end
+endmodule

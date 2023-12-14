@@ -1,0 +1,43 @@
+module brick (
+    input wire clk,
+    input wire reset,
+    input wire enable_movement,
+    output reg [7:0] brick_x,
+    output reg [7:0] brick_y,
+    output reg destroyed,
+    output reg hit_by_ball
+);
+
+    // Initialize brick state and position
+    reg destroyed = 0;
+    reg hit_by_ball = 0;
+    reg [7:0] brick_x = 0; // Initialize x-coordinate of the brick
+    reg [7:0] brick_y = 0; // Initialize y-coordinate of the brick
+    reg [7:0] speed = 1; // Speed of brick movement
+
+    always @(posedge reset) begin
+        // Reset brick state and position
+        destroyed <= 0;
+        brick_x <= 0;
+        brick_y <= 0;
+        hit_by_ball <= 0;
+    end
+
+    always @(posedge clk) begin
+        // Move the brick down automatically if movement enabled
+        if (enable_movement) begin
+            brick_y <= brick_y + speed;
+        end
+    end
+
+    always @(*) begin
+        // Check for collision with the ball
+        if (!destroyed && ball_x >= brick_x && ball_x <= brick_x + brick_width &&
+            ball_y >= brick_y && ball_y <= brick_y + brick_height) begin
+            hit_by_ball <= 1;
+        end else begin
+            hit_by_ball <= 0;
+        end
+    end
+
+endmodule
