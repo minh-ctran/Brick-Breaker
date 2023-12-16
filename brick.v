@@ -5,7 +5,6 @@ module brick (
 	 input wire [7:0] ball_y,
 	 input wire [7:0] init_x,
 	 input wire [7:0] init_y,
-	 input created,
 	 input [24:0] delay_done,
     output reg [7:0] x,
     output reg [7:0] y,
@@ -29,7 +28,7 @@ parameter NOT_EXIST = 2'b00,
 always@(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
-		s <= NOT_EXIST;
+		s <= EXIST;
 	else
 		s <= ns;
 end
@@ -37,17 +36,11 @@ end
 always@(*)
 begin
 	case(s)
-		NOT_EXIST:
-		begin
-			if (created == 1'b0)
-				ns = NOT_EXIST;
-			else 
-				ns = EXIST;
-		end
+		NOT_EXIST: ns = NOT_EXIST;
 		EXIST: ns = COLLIDE;
 		COLLIDE: 
 		begin
-			if (exist == 1'b1)
+			if (exist == 1'b1 && game_over == 1'b1)
 				ns = MOVE;
 			else
 				ns = NOT_EXIST;
@@ -59,15 +52,15 @@ end
 always @(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
-		exist <= 0;
+		exist <= 1;
+		x <= init_x;
+		y <= init_y;
 	else 
 	begin
 		case(s)
 			NOT_EXIST:
 			begin
 				delay <= 0;
-				x <= init_x;
-				y <= init_y;
 				exist <= 0;
 			end
 			EXIST: 
