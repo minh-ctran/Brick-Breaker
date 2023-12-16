@@ -31,6 +31,7 @@ parameter delay_done_bricks = 50000000;
 parameter delay_done_ball = 50000000;
 
 reg [7:0] color_input;
+reg launch;
 wire clk_25; //25MHz clock for vga
 wire [9:0] pixel_x;
 wire [9:0] pixel_y;
@@ -43,7 +44,7 @@ reg win;
 
 parameter START = 0,
 			PLAY = 1,
-			CHECK_STATUS = 2
+			CHECK_STATUS = 2,
 			LOSE = 3,
 			WIN = 4;
 
@@ -60,7 +61,7 @@ begin
 	case(s)
 		START:
 		begin
-			if (start == 1'b0)
+			if (launch == 1'b1)
 				ns = PLAY;
 			else 
 				ns = START;
@@ -87,9 +88,12 @@ begin
 	begin
 		game_over <= 0;
 		victory <= 0;
+		launch <= 0;
 	end
 	else
 	begin
+		if (start == 1'b0)
+			launch <= 1;
 		case(s)
 			START:
 			begin
@@ -111,7 +115,7 @@ end
 ball ball_inst (
     .clk(clk),
     .rst(rst),
-    .start(start),
+	.start(launch),
 	 .delay_done(delay_done_ball),
     .paddle_x(paddle_x),
     .brick1_x(brick1_x),
@@ -137,7 +141,7 @@ paddle paddle_inst (
     .rst(rst),
     .left(left), // Connect left control signal
     .right(right), // Connect right control signal
-    .start(start), // Connect start control signal
+	.start(launch), // Connect start control signal
     .x(paddle_x)
 );
 
