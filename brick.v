@@ -20,10 +20,10 @@ reg [1:0] s;
 reg [1:0] ns;
 reg [24:0] delay;
 
-parameter NOT_EXIST = 0,
-			EXIST = 1,
-			COLLIDE = 2,
-			MOVE = 3;
+parameter NOT_EXIST = 3,
+			EXIST = 0,
+			COLLIDE = 1,
+			MOVE = 2:
 
 always@(posedge clk or negedge rst)
 begin
