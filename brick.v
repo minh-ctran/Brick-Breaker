@@ -9,7 +9,8 @@ module brick (
 	 input [24:0] delay_done,
     output reg [7:0] x,
     output reg [7:0] y,
-    output reg exist
+    output reg exist,
+	 output reg game_over
 );
 
 // Speed of the brick movement
@@ -19,8 +20,6 @@ parameter speed = 1;
 reg [1:0] s;
 reg [1:0] ns;
 reg [24:0] delay;
-
-reg destroyed;
 
 parameter NOT_EXIST = 2'b00,
 			EXIST = 2'b01,
@@ -48,7 +47,7 @@ begin
 		EXIST: ns = COLLIDE;
 		COLLIDE: 
 		begin
-			if (exist == 1'b0)
+			if (exist == 1'b1)
 				ns = MOVE;
 			else
 				ns = NOT_EXIST;
@@ -57,7 +56,7 @@ begin
 	endcase
 end
 
-always @(posedge clk or posedge rst)
+always @(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
 		exist <= 0;
@@ -75,6 +74,7 @@ begin
 			begin
 				delay <= delay + 1;
 				exist <= ~((ball_x <= x + 57) && (ball_x + 20 >= x)) && ((ball_y <= y + 19) && (ball_y + 20 >= y));
+				game_over <= (y >= 458);
 			end
 			MOVE:
 			begin

@@ -2,7 +2,6 @@ module ball (
     input clk,
     input rst,
 	 input start,
-	 input destroyed,
 	 input [24:0] delay_done,
 	 input wire [8:0] paddle_x,
     input wire [8:0] brick1_x,
@@ -17,9 +16,10 @@ module ball (
     input wire [8:0] brick5_y,
 	 input wire [8:0] brick6_x,
     input wire [8:0] brick6_y,
-	 input wire [5:0] brick_exist,
+	 input wire [5:0] bricks_exist,
     output reg [8:0] x,
-    output reg [8:0] y
+    output reg [8:0] y,
+	 output reg destroyed
 );
 
 reg [2:0] s;
@@ -48,7 +48,7 @@ parameter START = 0,
 			DESTROYED = 4,
 			ERROR = 5;
 
-always@(posedge clk or posedge rst)
+always@(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
 		s <= START;
@@ -84,8 +84,8 @@ always@(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
 	begin
-		x <= 176;
-		y <= 459;
+		x <= 309;
+		y <= 438;
 	end
 	else
 	begin
@@ -102,7 +102,7 @@ begin
 				top_bottom <= 0;
 				left_right <= 0;
 				dx <= 1;
-				dy <= 1;
+				dy <= -1;
 				delay <= 0;
 			end
 			MOVE:
@@ -118,14 +118,16 @@ begin
 			end
 			COLLIDE:
 			begin
-				paddle <= (x <= paddle_x + 62) && (x + 20 >= paddle_x) && (y + 20 == 458);
+				destroyed <= (y + 19 >= 459);
 				
-				brick1 <= ((x <= brick1_x + 57) && (x + 20 >= brick1_x)) && ((y <= brick1_y + 19) && (y + 20 >= brick1_y) && brick_exist[0]);
-				brick2 <= ((x <= brick2_x + 57) && (x + 20 >= brick2_x)) && ((y <= brick2_y + 19) && (y + 20 >= brick2_y) && brick_exist[1]);
-				brick3 <= ((x <= brick3_x + 57) && (x + 20 >= brick3_x)) && ((y <= brick3_y + 19) && (y + 20 >= brick3_y) && brick_exist[2]);
-				brick4 <= ((x <= brick4_x + 57) && (x + 20 >= brick4_x)) && ((y <= brick4_y + 19) && (y + 20 >= brick4_y) && brick_exist[3]);
-				brick5 <= ((x <= brick5_x + 57) && (x + 20 >= brick5_x)) && ((y <= brick5_y + 19) && (y + 20 >= brick5_y) && brick_exist[4]);
-				brick6 <= ((x <= brick6_x + 57) && (x + 20 >= brick6_x)) && ((y <= brick6_y + 19) && (y + 20 >= brick6_y) && brick_exist[5]);
+				paddle <= (x < paddle_x + 74) && (x + 20 >= paddle_x) && (y + 20 == 458);
+				
+				brick1 <= ((x <= brick1_x + 57) && (x + 20 >= brick1_x)) && ((y <= brick1_y + 19) && (y + 20 >= brick1_y) && bricks_exist[0]);
+				brick2 <= ((x <= brick2_x + 57) && (x + 20 >= brick2_x)) && ((y <= brick2_y + 19) && (y + 20 >= brick2_y) && bricks_exist[1]);
+				brick3 <= ((x <= brick3_x + 57) && (x + 20 >= brick3_x)) && ((y <= brick3_y + 19) && (y + 20 >= brick3_y) && bricks_exist[2]);
+				brick4 <= ((x <= brick4_x + 57) && (x + 20 >= brick4_x)) && ((y <= brick4_y + 19) && (y + 20 >= brick4_y) && bricks_exist[3]);
+				brick5 <= ((x <= brick5_x + 57) && (x + 20 >= brick5_x)) && ((y <= brick5_y + 19) && (y + 20 >= brick5_y) && bricks_exist[4]);
+				brick6 <= ((x <= brick6_x + 57) && (x + 20 >= brick6_x)) && ((y <= brick6_y + 19) && (y + 20 >= brick6_y) && bricks_exist[5]);
 				
 				left_right <= (brick1 && (y < brick1_y + 19) && (y + 20 > brick1_y)) ||
 							(brick2 && (y < brick2_y + 19) && (y + 20 > brick2_y)) ||
@@ -154,11 +156,11 @@ begin
 			begin
 				if (paddle == 1'b1)
 				begin
-					if (x + 20 >= paddle_x && x <= paddle_x + 9)
+					if (x + 20 >= paddle_x && x <= paddle_x + 12)
 						dx <= -dx;
-					else if (x + 19 >= paddle_x + 10 && x <= paddle_x + 30 && dx > 1)
+					else if (x + 19 >= paddle_x + 13 && x <= paddle_x + 33 && dx > 1)
 						dx <= -(dx - 1);
-					else if (x + 19 >= paddle_x + 31 && x <= paddle_x + 62 && dx <= 5)
+					else if (x + 19 >= paddle_x + 34 && x <= paddle_x + 74 && dx <= 5)
 						dx <= -(dx + 1);
 				end
 				
@@ -170,6 +172,16 @@ begin
 		endcase
 	end
 end
+
+/*always@(*)
+begin
+	bricks_exist[0] = brick1;
+	bricks_exist[1] = brick2;
+	bricks_exist[2] = brick3;
+	bricks_exist[3] = brick4;
+	bricks_exist[4] = brick5;
+	bricks_exist[5] = brick6;
+end*/
 
 endmodule
 

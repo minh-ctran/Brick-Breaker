@@ -1,0 +1,114 @@
+module Game_Top (
+    input wire clk,
+    input wire rst,
+    // Add any input wires for controls, like buttons or switches
+    
+    output wire vga_r,
+    output wire vga_g,
+    output wire vga_b,
+    output wire vga_hsync,
+    output wire vga_vsync
+);
+
+wire [8:0] ball_x, ball_y;
+wire [8:0] paddle_x;
+wire [8:0] brick1_x, brick1_y;
+wire [8:0] brick2_x, brick2_y;
+wire [8:0] brick3_x, brick3_y;
+wire [8:0] brick4_x, brick4_y;
+wire [8:0] brick5_x, brick5_y;
+wire [8:0] brick6_x, brick6_y;
+wire [5:0] brick_exist;
+
+// Instantiate ball, paddle, and bricks modules
+ball Ball_inst (
+    .clk(clk),
+    .rst(rst),
+    // Connect control signals for ball movement, destruction, etc.
+    .ball_x(ball_x),
+    .ball_y(ball_y),
+    .paddle_x(paddle_x),
+    .brick1_x(brick1_x),
+    .brick1_y(brick1_y),
+    .brick2_x(brick2_x),
+    .brick2_y(brick2_y),
+    .brick3_x(brick3_x),
+    .brick3_y(brick3_y),
+    .brick4_x(brick4_x),
+    .brick4_y(brick4_y),
+    .brick5_x(brick5_x),
+    .brick5_y(brick5_y),
+    .brick6_x(brick6_x),
+    .brick6_y(brick6_y),
+    .brick_exist(brick_exist),
+    .x(ball_x),
+    .y(ball_y)
+);
+
+paddle Paddle_inst (
+    .clk(clk),
+    .rst(rst),
+    // Connect control signals for paddle movement, etc.
+    .left(), // Connect left control signal
+    .right(), // Connect right control signal
+    .start(), // Connect start control signal
+    .x(paddle_x)
+);
+
+brick Brick1_inst (
+    .clk(clk),
+    .rst(rst),
+    // Connect necessary signals for brick movement, collision detection, etc.
+    .ball_x(ball_x),
+    .ball_y(ball_y),
+    .init_x(// Initial X position for this brick),
+    .init_y(// Initial Y position for this brick),
+    .created(), // Connect created signal
+    .delay_done(), // Connect delay_done signal
+    .x(brick1_x),
+    .y(brick1_y),
+    .exist(brick_exist[0])
+);
+
+brick Brick2_inst (
+    .clk(clk),
+    .rst(rst),
+    // Connect necessary signals for brick movement, collision detection, etc.
+    .ball_x(ball_x),
+    .ball_y(ball_y),
+    .init_x(// Initial X position for this brick),
+    .init_y(// Initial Y position for this brick),
+    .created(), // Connect created signal
+    .delay_done(), // Connect delay_done signal
+    .x(brick2_x),
+    .y(brick2_y),
+    .exist(brick_exist[1])
+);
+
+// Instantiate VGA controller
+VGA_Controller VGA_inst (
+    .clk(clk),
+    .rst(rst),
+    .ball_x(ball_x),
+    .ball_y(ball_y),
+    .paddle_x(paddle_x),
+    .brick1_x(brick1_x),
+    .brick1_y(brick1_y),
+    .brick2_x(brick2_x),
+    .brick2_y(brick2_y),
+    .brick3_x(brick3_x),
+    .brick3_y(brick3_y),
+    .brick4_x(brick4_x),
+    .brick4_y(brick4_y),
+    .brick5_x(brick5_x),
+    .brick5_y(brick5_y),
+    .brick6_x(brick6_x),
+    .brick6_y(brick6_y),
+    .vga_r(vga_r),
+    .vga_g(vga_g),
+    .vga_b(vga_b),
+    .vga_hsync(vga_hsync),
+    .vga_vsync(vga_vsync)
+);
+
+endmodule
