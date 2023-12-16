@@ -147,8 +147,7 @@ brick brick1_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(134),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick1_x),
     .y(brick1_y),
@@ -162,8 +161,7 @@ brick brick2_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(197),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick2_x),
     .y(brick2_y),
@@ -177,8 +175,7 @@ brick brick3_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(260),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick3_x),
     .y(brick3_y),
@@ -192,8 +189,7 @@ brick brick4_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(323),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick4_x),
     .y(brick4_y),
@@ -207,8 +203,7 @@ brick brick5_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(386),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick5_x),
     .y(brick5_y),
@@ -222,8 +217,7 @@ brick brick6_inst (
     .ball_x(ball_x),
     .ball_y(ball_y),
     .init_x(449),
-    .init_y(18),
-    .created(start), // Connect created signal
+	.init_y(0),
     .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick6_x),
     .y(brick6_y),
