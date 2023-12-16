@@ -20,10 +20,10 @@ reg [1:0] s;
 reg [1:0] ns;
 reg [24:0] delay;
 
-parameter NOT_EXIST = 2'b00,
-			EXIST = 2'b01,
-			COLLIDE = 2'b10,
-			MOVE = 2'b11;
+parameter NOT_EXIST = 0,
+			EXIST = 1,
+			COLLIDE = 2,
+			MOVE = 3;
 
 always@(posedge clk or negedge rst)
 begin
@@ -40,7 +40,7 @@ begin
 		EXIST: ns = COLLIDE;
 		COLLIDE: 
 		begin
-			if (exist == 1'b1 && game_over == 1'b1)
+			if (exist == 1'b1 && game_over == 1'b0)
 				ns = MOVE;
 			else
 				ns = NOT_EXIST;
@@ -52,9 +52,13 @@ end
 always @(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
+	begin
 		exist <= 1;
 		x <= init_x;
 		y <= init_y;
+		game_over <= 0;
+		delay <= 0;
+	end
 	else 
 	begin
 		case(s)
@@ -71,12 +75,13 @@ begin
 			end
 			MOVE:
 			begin
-				delay <= delay + 2;
 				if (delay >= delay_done)
 				begin
 					y <= y + speed;
 					delay <= 0;
 				end
+				else
+					delay <= delay + 2; 
 			end
 		endcase
 	end

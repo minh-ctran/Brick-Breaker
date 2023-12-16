@@ -38,8 +38,8 @@ reg left_right;
 reg paddle;
 // reg corner;
 
-reg dx;
-reg dy;
+reg [4:0] dx;
+reg [4:0] dy;
 
 parameter START = 0,
 			MOVE = 1,
@@ -85,7 +85,7 @@ begin
 	if (rst == 1'b0)
 	begin
 		x <= 309;
-		y <= 438;
+		y <= 435;
 	end
 	else
 	begin
@@ -104,6 +104,7 @@ begin
 				dx <= 1;
 				dy <= -1;
 				delay <= 0;
+				destroyed <= 0;
 			end
 			MOVE:
 			begin
@@ -158,10 +159,10 @@ begin
 				begin
 					if (x + 20 >= paddle_x && x <= paddle_x + 12)
 						dx <= -dx;
-					else if (x + 19 >= paddle_x + 13 && x <= paddle_x + 33 && dx > 1)
-						dx <= -(dx - 1);
+					else if (x + 19 >= paddle_x + 13 && x <= paddle_x + 33 && dx != 1)
+						dx <= -dx + 1;
 					else if (x + 19 >= paddle_x + 34 && x <= paddle_x + 74 && dx <= 5)
-						dx <= -(dx + 1);
+						dx <= -dx - 1;
 				end
 				
 				if (left_right == 1'b1)

@@ -13,7 +13,8 @@ module brick_breaker (
     output wire vga_hsync,
     output wire vga_vsync,
 	 output reg game_over,
-	 output reg victory
+	 output reg victory,
+	 output reg [5:0] bricks_exist
 );
 
 wire [8:0] ball_x, ball_y;
@@ -24,11 +25,12 @@ wire [8:0] brick3_x, brick3_y;
 wire [8:0] brick4_x, brick4_y;
 wire [8:0] brick5_x, brick5_y;
 wire [8:0] brick6_x, brick6_y;
-wire [5:0] bricks_exist;
+//wire [5:0] bricks_exist;
 wire [5:0] bricks_death_zone;
 
-parameter delay_done_bricks = 50000000;
-parameter delay_done_ball = 50000000;
+parameter delay_done_bricks = 25000000;
+parameter delay_done_ball = 25000000;
+parameter delay_done_paddle = 50000000;
 
 reg [7:0] color_input;
 reg launch;
@@ -40,6 +42,7 @@ reg [3:0] s;
 reg [3:0] ns;
 
 reg lose;
+reg ball_destroyed;
 reg win;
 
 parameter START = 0,
@@ -102,8 +105,8 @@ begin
 			end
 			PLAY:
 			begin
-				lose <= lose || bricks_death_zone[0] || bricks_death_zone[1] || bricks_death_zone[2] || bricks_death_zone[3] || bricks_death_zone[4] || bricks_death_zone[5];
-				win <= (bricks_exist == 6'b0);
+				lose <= ball_destroyed || bricks_death_zone[0] || bricks_death_zone[1] || bricks_death_zone[2] || bricks_death_zone[3] || bricks_death_zone[4] || bricks_death_zone[5];
+				win <= (bricks_exist == 6'b000000);
 			end
 			WIN: victory <= 1;
 			LOSE: game_over <= 1;
@@ -133,7 +136,7 @@ ball ball_inst (
     .bricks_exist(bricks_exist),
     .x(ball_x),
     .y(ball_y),
-	 .destroyed(lose)
+	 .destroyed(ball_destroyed)
 );
 
 paddle paddle_inst (
@@ -142,6 +145,7 @@ paddle paddle_inst (
     .left(left), // Connect left control signal
     .right(right), // Connect right control signal
 	.start(launch), // Connect start control signal
+	.delay_done(delay_done_paddle),
     .x(paddle_x)
 );
 
