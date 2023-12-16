@@ -64,7 +64,7 @@ module draw(
 				pixel_color <= white;
 			
 			//draw brick1 (rectangle)
-			else if (/*(bricks_exist[0] == 1) && */(pixel_x < brick1_x + 57 && pixel_x >= brick1_x) && 
+			else if ((bricks_exist[0] == 1) && (pixel_x < brick1_x + 57 && pixel_x >= brick1_x) && 
 						(pixel_y < brick1_y + 19 && pixel_y >= brick1_y))
 				pixel_color <= white;
 			
