@@ -43,8 +43,9 @@ reg win;
 
 parameter START = 0,
 			PLAY = 1,
-			LOSE = 2,
-			WIN = 3;
+			CHECK_STATUS = 2
+			LOSE = 3,
+			WIN = 4;
 
 always@(posedge clk or negedge rst)
 begin
@@ -64,7 +65,8 @@ begin
 			else 
 				ns = START;
 		end
-		PLAY:
+		PLAY: ns = CHECK_STATUS;
+		CHECK_STATUS:
 		begin
 			if (lose == 1'b1)
 				ns = LOSE;
@@ -96,10 +98,11 @@ begin
 			end
 			PLAY:
 			begin
-				game_over <= lose || bricks_death_zone[0] || bricks_death_zone[1] || bricks_death_zone[2] || bricks_death_zone[3] || bricks_death_zone[4] || bricks_death_zone[5];
+				lose <= lose || bricks_death_zone[0] || bricks_death_zone[1] || bricks_death_zone[2] || bricks_death_zone[3] || bricks_death_zone[4] || bricks_death_zone[5];
 				win <= (bricks_exist == 6'b0);
 			end
 			WIN: victory <= 1;
+			LOSE: game_over <= 1;
 		endcase
 	end
 end
