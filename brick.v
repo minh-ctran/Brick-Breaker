@@ -1,19 +1,19 @@
 module brick (
     input clk,
     input rst,
-	 input wire [7:0] ball_x,
-	 input wire [7:0] ball_y,
-	 input wire [7:0] init_x,
-	 input wire [7:0] init_y,
-	 input [24:0] delay_done,
-    output reg [7:0] x,
-    output reg [7:0] y,
+	input wire [8:0] ball_x,
+	input wire [8:0] ball_y,
+	input wire [8:0] init_x,
+	input wire [8:0] init_y,
+	output reg [8:0] x,
+	output reg [8:0] y,
     output reg exist,
 	 output reg game_over
 );
 
 // Speed of the brick movement
 parameter speed = 1;
+parameter delay_done = 50000000;
 
 // State machine states for brick movement
 reg [1:0] s;
@@ -53,10 +53,10 @@ always @(posedge clk or negedge rst)
 begin
 	if (rst == 1'b0)
 	begin
-		exist <= 1;
+		exist <= 1'b1;
 		x <= init_x;
 		y <= init_y;
-		game_over <= 0;
+		game_over <= 1'b0;
 		delay <= 0;
 	end
 	else 
@@ -69,7 +69,6 @@ begin
 			end
 			EXIST: 
 			begin
-				delay <= delay + 1;
 				exist <= ~((ball_x <= x + 57) && (ball_x + 20 >= x)) && ((ball_y <= y + 19) && (ball_y + 20 >= y));
 				game_over <= (y >= 458);
 			end
@@ -81,7 +80,7 @@ begin
 					delay <= 0;
 				end
 				else
-					delay <= delay + 2; 
+					delay <= delay + 3; 
 			end
 		endcase
 	end
