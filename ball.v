@@ -2,7 +2,6 @@ module ball (
     input clk,
     input rst,
 	 input start,
-	 input [24:0] delay_done,
 	 input wire [8:0] paddle_x,
     input wire [8:0] brick1_x,
     input wire [8:0] brick1_y,
@@ -21,6 +20,8 @@ module ball (
     output reg [8:0] y,
 	 output reg destroyed
 );
+
+parameter delay_done = 25000000;	
 
 reg [2:0] s;
 reg [2:0] ns;
@@ -166,9 +167,9 @@ begin
 				end
 				
 				if (left_right == 1'b1)
-					dy <= -dy;
-				else if (top_bottom == 1'b1)
 					dx <= -dx;
+				else if (top_bottom == 1'b1)
+					dy <= -dy;
 			end
 		endcase
 	end
