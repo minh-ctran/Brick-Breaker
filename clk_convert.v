@@ -1,11 +1,13 @@
-  module clk_convert(
+module clk_convert(
 	input clk,
 	output reg half_clk
-	);
+);
 
-reg [1:0]S = CLK_HIGH, NS;
+parameter CLK_HIGH = 2'd0, 
+			CLK_LOW = 2'd1;
 
-parameter CLK_HIGH = 2'd0, CLK_LOW = 2'd1;
+reg [1:0] S = CLK_HIGH; 
+reg [1:0] NS;
 
 always@(posedge clk)
 begin

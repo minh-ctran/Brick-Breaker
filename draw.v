@@ -19,9 +19,9 @@ module draw(
 	input [8:0] ball_x,
 	input [8:0] ball_y,
 	input [9:0] pixel_x,
-	input [9:0] pixel_y,/*
+	input [9:0] pixel_y,
 	input lose,
-	input win,*/
+	input win,
 
 	output reg [7:0]color_out
 	);
@@ -45,13 +45,13 @@ module draw(
 			color_out <= pixel_color;
 			
 			//set initial screen to black
-			/*if ((pixel_x >= 134 && pixel_x < 505))
+			if ((pixel_x >= 134 && pixel_x < 505))
 			begin
 				if (lose == 1'b1)
 					pixel_color <= red;
 				else if (win == 1'b1)
 					pixel_color <= white;
-			end*/
+			end
 			
 			//draw ball (square)
 			if ((pixel_x < ball_x + 20 && pixel_x >= ball_x) && 
@@ -69,7 +69,7 @@ module draw(
 				pixel_color <= white;
 			
 			//draw brick2 (rectangle)
-			else if (/*(bricks_exist[1] == 1) && */(pixel_x < brick2_x + 57 && pixel_x >= brick2_x) && 
+			else if ((bricks_exist[1] == 1) && (pixel_x < brick2_x + 57 && pixel_x >= brick2_x) && 
 						(pixel_y < brick2_y + 19 && pixel_y >= brick2_y))
 				pixel_color <= white;
 			

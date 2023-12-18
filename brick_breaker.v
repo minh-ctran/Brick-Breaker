@@ -1,6 +1,6 @@
 module brick_breaker (
-    input wire clk,
-    input wire rst,
+    input clk,
+    input rst,
     input right,
 	 input left,
 	 input start, 
@@ -29,8 +29,6 @@ wire [8:0] brick6_x, brick6_y;
 wire [5:0] bricks_death_zone;
 
 parameter delay_done_bricks = 25000000;
-parameter delay_done_ball = 25000000;
-parameter delay_done_paddle = 50000000;
 
 reg [7:0] color_input;
 reg launch;
@@ -119,7 +117,6 @@ ball ball_inst (
     .clk(clk),
     .rst(rst),
 	.start(launch),
-	 .delay_done(delay_done_ball),
     .paddle_x(paddle_x),
     .brick1_x(brick1_x),
     .brick1_y(brick1_y),
@@ -145,7 +142,6 @@ paddle paddle_inst (
     .left(left), // Connect left control signal
     .right(right), // Connect right control signal
 	.start(launch), // Connect start control signal
-	.delay_done(delay_done_paddle),
     .x(paddle_x)
 );
 
@@ -156,7 +152,6 @@ brick brick1_inst (
     .ball_y(ball_y),
     .init_x(134),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick1_x),
     .y(brick1_y),
     .exist(bricks_exist[0]),
@@ -170,7 +165,6 @@ brick brick2_inst (
     .ball_y(ball_y),
     .init_x(197),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick2_x),
     .y(brick2_y),
     .exist(bricks_exist[1]),
@@ -184,7 +178,6 @@ brick brick3_inst (
     .ball_y(ball_y),
     .init_x(260),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick3_x),
     .y(brick3_y),
     .exist(bricks_exist[2]),
@@ -198,7 +191,6 @@ brick brick4_inst (
     .ball_y(ball_y),
     .init_x(323),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick4_x),
     .y(brick4_y),
     .exist(bricks_exist[3]),
@@ -212,7 +204,6 @@ brick brick5_inst (
     .ball_y(ball_y),
     .init_x(386),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick5_x),
     .y(brick5_y),
     .exist(bricks_exist[4]),
@@ -226,7 +217,6 @@ brick brick6_inst (
     .ball_y(ball_y),
     .init_x(449),
 	.init_y(0),
-    .delay_done(delay_done_bricks), // Connect delay_done signal
     .x(brick6_x),
     .y(brick6_y),
     .exist(bricks_exist[5]),
@@ -271,9 +261,9 @@ draw draw_things (
 	.ball_x(ball_x),
 	.ball_y(ball_y),
 	.pixel_x(pixel_x),
-	.pixel_y(pixel_y),/*
+	.pixel_y(pixel_y),
 	.lose(lose),
-	.win(win),*/
+	.win(win),
 	.color_out(color_input)
 );
 

@@ -21,7 +21,6 @@ module ball (
 	 output reg destroyed
 );
 
-parameter delay_done = 25000000;	
 
 reg [2:0] s;
 reg [2:0] ns;
@@ -48,6 +47,8 @@ parameter START = 0,
 			BOUNCE = 3,
 			DESTROYED = 4,
 			ERROR = 5;
+			
+parameter delay_done = 50000000;
 
 always@(posedge clk or negedge rst)
 begin

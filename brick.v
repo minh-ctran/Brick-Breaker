@@ -23,7 +23,7 @@ reg [24:0] delay;
 parameter NOT_EXIST = 3,
 			EXIST = 0,
 			COLLIDE = 1,
-			MOVE = 2:
+			MOVE = 2;
 
 always@(posedge clk or negedge rst)
 begin

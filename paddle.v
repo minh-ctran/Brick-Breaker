@@ -4,11 +4,12 @@ module paddle (
 	input left,
 	input right,
 	input start,
-	input delay_done,
 	output reg [8:0] x
 );
 
 reg delay;
+
+parameter delay_done = 50000000;
 
 always @(posedge clk or negedge rst)
 begin
